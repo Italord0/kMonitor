@@ -9,11 +9,13 @@ data class KMonitorScreenState(
 data class CPU(
     val name: String,
     val temp: Int,
+    val load: Int
 )
 
 data class GPU(
     val name: String,
     val temp: Int,
+    val load: Int
 )
 
 data class MOBO(
