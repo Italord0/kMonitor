@@ -22,12 +22,13 @@ fun KMonitorScreen(viewModel: KMonitorViewModel) {
     with(screenState) {
         Column {
             Text("CPU: ${cpu?.name}")
-            Text("CPU Temperature: ${cpu?.temp}")
-            Text("CPU Load: ${cpu?.load}")
+            Text("CPU Temperature: ${cpu?.temp}ºc")
+            Text("CPU Load: ${cpu?.load}%")
             Text("------------")
             Text("GPU: ${gpu?.name}")
-            Text("GPU Temperature: ${gpu?.temp}")
-            Text("GPU Load: ${gpu?.load}")
+            Text("GPU Temperature: ${gpu?.temp}ºc")
+            Text("GPU Load: ${gpu?.load}%")
+            Text("Testando app rodando")
         }
     }
 }
