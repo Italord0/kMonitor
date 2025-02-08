@@ -14,6 +14,7 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.geometry.Offset
 
 @Composable
 fun kMonitorGraph(
@@ -22,11 +23,24 @@ fun kMonitorGraph(
     lineColor: Color = Color.Blue,
     strokeWidth: Float = 4f,
     labelColor: Color = Color.White,
-    labelTextSize: Float = 12f
+    labelTextSize: Float = 12f,
+    dotRadius: Float = 4f,
+    dashLength: Float = 10f,
+    dashGap: Float = 5f
 ) {
     val textMeasurer = rememberTextMeasurer()
     Canvas(modifier = modifier) {
-        drawLineGraph(dataPoints, lineColor, strokeWidth, labelColor, labelTextSize, textMeasurer)
+        drawLineGraph(
+            dataPoints,
+            lineColor,
+            strokeWidth,
+            labelColor,
+            labelTextSize,
+            textMeasurer,
+            dotRadius,
+            dashLength,
+            dashGap
+        )
     }
 }
 
@@ -36,7 +50,10 @@ fun DrawScope.drawLineGraph(
     strokeWidth: Float,
     labelColor: Color,
     labelTextSize: Float,
-    textMeasurer: TextMeasurer
+    textMeasurer: TextMeasurer,
+    dotRadius: Float,
+    dashLength: Float,
+    dashGap: Float
 ) {
     if (dataPoints.isEmpty()) return
 
@@ -45,6 +62,21 @@ fun DrawScope.drawLineGraph(
     val maxDataPoint = dataPoints.maxOrNull() ?: 1f
     val minDataPoint = dataPoints.minOrNull() ?: 0f
     val padding = 16.dp.toPx()
+
+    dataPoints.forEachIndexed { index, _ ->
+        val x = padding + (index * (graphWidth - 2 * padding) / (dataPoints.size - 1).coerceAtLeast(1))
+
+        var currentY = padding
+        while (currentY < graphHeight - padding) {
+            drawLine(
+                color = Color.Gray.copy(alpha = 0.5f),
+                start = Offset(x, currentY),
+                end = Offset(x, currentY + dashLength),
+                strokeWidth = 1f
+            )
+            currentY += dashLength + dashGap
+        }
+    }
 
     val path = Path()
     dataPoints.forEachIndexed { index, dataPoint ->
@@ -59,6 +91,12 @@ fun DrawScope.drawLineGraph(
         } else {
             path.lineTo(x, y)
         }
+
+        drawCircle(
+            color = lineColor,
+            radius = dotRadius,
+            center = Offset(x, y)
+        )
     }
     drawPath(path, color = lineColor, style = Stroke(width = strokeWidth))
 
@@ -70,7 +108,7 @@ fun DrawScope.drawLineGraph(
                 1f
             )
 
-        val labelText = "%.1f".format(labelValue)
+        val labelText = "%d".format(labelValue.toInt())
 
         val textLayoutResult = textMeasurer.measure(
             text = labelText,
@@ -83,10 +121,12 @@ fun DrawScope.drawLineGraph(
 
         drawText(
             textLayoutResult = textLayoutResult,
-            topLeft = androidx.compose.ui.geometry.Offset(
-                x = padding - textLayoutResult.size.width - 8.dp.toPx(), // Add some padding between the label and the graph
-                y = y - (textLayoutResult.size.height / 2) // Center the text vertically
+            topLeft = Offset(
+                x = padding - textLayoutResult.size.width - 8.dp.toPx(),
+                y = y - (textLayoutResult.size.height / 2)
             )
         )
     }
+
+
 }
