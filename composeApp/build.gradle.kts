@@ -33,8 +33,6 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(files("jSensors.jar"))
-            implementation("com.github.oshi:oshi-core:6.6.6")
-
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

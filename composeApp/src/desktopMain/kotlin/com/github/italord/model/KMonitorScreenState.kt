@@ -1,24 +1,28 @@
 package com.github.italord.model
 
+
 data class KMonitorScreenState(
-    val cpu: CPU? = null,
-    val gpu: GPU? = null,
-    val mobo: MOBO? = null,
+    val cpu: Component = CPU("null", 0,0, listOf()),
+    val gpu: Component = GPU("null", 0,0, listOf())
 )
+
+interface Component {
+    val name: String
+    val temp: Int
+    val load: Int
+    val temps : List<Float>
+}
 
 data class CPU(
-    val name: String,
-    val temp: Int,
-    val load: Int
-)
+    override val name: String,
+    override val temp: Int,
+    override val load: Int,
+    override val temps: List<Float>
+) : Component
 
 data class GPU(
-    val name: String,
-    val temp: Int,
-    val load: Int
-)
-
-data class MOBO(
-    val name: String,
-    val temp: Int,
-)
+    override val name: String,
+    override val temp: Int,
+    override val load: Int,
+    override val temps: List<Float>
+) : Component

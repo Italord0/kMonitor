@@ -13,6 +13,7 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
         maven("https://packages.jetbrains.team/maven/p/firework/dev")
+        maven ("https://jitpack.io")
     }
 }
 
