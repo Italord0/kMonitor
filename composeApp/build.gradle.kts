@@ -19,10 +19,10 @@ tasks.register<ComposeHotRun>("runHot") {
 
 kotlin {
     jvm("desktop")
-    
+
     sourceSets {
         val desktopMain by getting
-        
+
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -47,9 +47,10 @@ compose.desktop {
         mainClass = "com.github.italord.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "com.github.italord"
+            targetFormats(TargetFormat.Exe)
+            packageName = "kMonitor"
             packageVersion = "1.0.0"
+            vendor = "Italo Melo"
         }
     }
 }

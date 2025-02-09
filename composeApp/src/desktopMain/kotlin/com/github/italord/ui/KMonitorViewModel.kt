@@ -17,11 +17,16 @@ class KMonitorViewModel {
 
         //CPU
         val cpu = JSensors.get.components().cpus.map { cpu ->
+            val temperature = cpu.sensors.temperatures.map { it.value }.average().toInt()
+            if (_screenState.value.cpu.temps.size > 10) {
+                _screenState.value.cpu.temps.removeAt(0)
+            }
+            _screenState.value.cpu.temps.add(temperature.toFloat())
             CPU(
                 cpu.name,
-                cpu.sensors.temperatures.map { it.value }.average().toInt(),
+                temperature,
                 cpu.sensors.loads.first { it.name == "Load CPU Total" }.value.toInt(),
-                listOf(1f,2f,3f,4f,5f,6f,7f,8f,9f,10f)
+                temps = _screenState.value.cpu.temps
             )
         }
         if (cpu.isNotEmpty()) {
@@ -32,11 +37,16 @@ class KMonitorViewModel {
 
         //GPU
         val gpu = JSensors.get.components().gpus.map { gpu ->
+            val temperatureGpu = gpu.sensors.temperatures.map { it.value }.average().toInt()
+            if (_screenState.value.gpu.temps.size > 10) {
+                _screenState.value.gpu.temps.removeAt(0)
+            }
+            _screenState.value.gpu.temps.add(temperatureGpu.toFloat())
             GPU(
                 gpu.name,
-                gpu.sensors.temperatures.map { it.value }.average().toInt(),
+                temperatureGpu,
                 gpu.sensors.loads.map { it.value }.first().toInt(),
-                listOf(1f,2f,3f,4f,5f,6f,7f,8f,9f,10f)
+                temps = _screenState.value.gpu.temps
             )
         }
         if (gpu.isNotEmpty()) {
@@ -54,7 +64,7 @@ class KMonitorViewModel {
                     "Fake CPU",
                     67,
                     69,
-                    listOf(1f,2f,3f,4f,5f,6f,7f,8f,9f,10f)
+                    mutableListOf(1f,2f,3f,4f,5f,6f,7f,8f,9f,10f)
                 ))
             }
 
@@ -64,7 +74,7 @@ class KMonitorViewModel {
                 "Fake GPU",
                 67,
                 69,
-                listOf(1f,2f,3f,4f,5f,6f,7f,8f,9f,10f)
+                mutableListOf(1f,2f,3f,4f,5f,6f,7f,8f,9f,10f)
             ))
         }
     }

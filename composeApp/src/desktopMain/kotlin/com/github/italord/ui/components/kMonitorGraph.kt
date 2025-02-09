@@ -18,14 +18,14 @@ import androidx.compose.ui.geometry.Offset
 
 @Composable
 fun kMonitorGraph(
-    dataPoints: List<Float>,
     modifier: Modifier = Modifier,
+    dataPoints: List<Float>,
     lineColor: Color = Color.Blue,
-    strokeWidth: Float = 4f,
+    strokeWidth: Float = 2f,
     labelColor: Color = Color.White,
     labelTextSize: Float = 12f,
-    dotRadius: Float = 4f,
-    dashLength: Float = 10f,
+    dotRadius: Float = 2f,
+    dashLength: Float = 5f,
     dashGap: Float = 5f
 ) {
     val textMeasurer = rememberTextMeasurer()
@@ -59,8 +59,8 @@ fun DrawScope.drawLineGraph(
 
     val graphWidth = size.width
     val graphHeight = size.height
-    val maxDataPoint = dataPoints.maxOrNull() ?: 1f
-    val minDataPoint = dataPoints.minOrNull() ?: 0f
+    val maxDataPoint = (dataPoints.maxOrNull() ?: 1f) + 5f
+    val minDataPoint = (dataPoints.minOrNull() ?: 0f) - 5f
     val padding = 16.dp.toPx()
 
     dataPoints.forEachIndexed { index, _ ->
@@ -127,6 +127,4 @@ fun DrawScope.drawLineGraph(
             )
         )
     }
-
-
 }

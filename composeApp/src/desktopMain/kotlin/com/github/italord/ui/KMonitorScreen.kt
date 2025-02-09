@@ -19,8 +19,8 @@ fun KMonitorScreen(viewModel: KMonitorViewModel) {
 
     LaunchedEffect(Unit) {
         while (true) {
-            viewModel.fakeHardwareInformation()
-            delay(500)
+            viewModel.getHardwareInformation()
+            delay(2000)
         }
     }
 
