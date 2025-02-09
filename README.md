@@ -1,6 +1,6 @@
 # kMonitor
 
-Monitoring CPU and CPU
+CPU & GPU monitoring software
 
 This is a Kotlin Multiplatform project targeting Desktop (Windows only).
 
